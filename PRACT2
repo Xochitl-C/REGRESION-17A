@@ -1,0 +1,21 @@
+#crear tres variables de 4 entradas. las variabless de nombre:
+#facultad(economia, ingenieria, arquitectura y derecho)
+#licenciatura(actuaria, ingenieria civil, arquitectura, derecho)
+#calificacion alumnos ((6,4,10,8))
+#verificar con r que tipo de variables son
+#borrar las variables facultad y licenciatura
+#graficar con pie la variable calificacion 
+#incorporar los diversos elementos utilizados en clase
+fac<-c("economia","ingenieria","arquitectura","derecho")
+lic<-c("actuaria","ingenieria civil","arquitectura","derecho")
+calif<-c(6,4,10,8)
+class(fac)
+class(lic)
+class(calif)
+rm(fac)
+rm(lic)
+etiq<-c("6","4","10","8")
+pie(calif,etiq, main = 
+      "Grafica 1 Calificaciones Alumnos",
+    sub ="Fuente:",
+    col=c("green","red","blue","orange"), radius=1.1,clockwise=TRUE, lty = 4)
