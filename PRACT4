@@ -1,0 +1,92 @@
+###################### ejercicio matrices########
+##### 1) crear una matriz con la funcion dim() de 4 columnas 
+#y 5 renglones, ##esta matriz esta basada en un vector que contiene
+estos 
+#datos 11:31 
+## el nombre de los renglones es el siguiente (toluca, 
+#pachuca, gdl, mty)
+## el nombre de las columnas es (escuela1, escuela2, escuela3, 
+#escuela4, escuela5)
+## Incorporar el nombre a los renglones y columnas de la matriz
+## identificar el dato de la escuela 3 de toluca, de la escuela 5 de gdl y la escuela 1 de pachuca
+###### 2) crear con la funciÃ³n matrix una matriz de 6 renglones
+## y 3 columnas.... y preguntar por el dato de la matriz en el 
+## renglon 3 y columna 3
+
+z <- 11:30
+dim(z) <- c(5,4)
+z
+rownames(z) <- c("escuela1", "escuela2", "escuela3", "escuela4", "escuela5")
+colnames(z) <-c("toluca","pachuca","gdl","mty")
+z
+z["escuela3","toluca"]; a["escuela5","gdl"]; a["escuela1","pachuca"]
+
+##2)
+h <- matrix(1:18, nrow=6,ncol=3)
+h[3,3]
+##para pegar un renglon a la matriz z
+z <- rbind(z,c(4,5,6,7))
+z
+rownames(z) <- c("escuela1", "escuela2", "escuela3", "escuela4",
+                 "escuela5", "escuela6")
+z
+### para pegar una columna a la matriz z
+z <- cbind(z, c(14,25,36,47,99,81))
+z
+colnames(z) <-c("toluca","pachuca","gdl","mty","jocotitlan")
+z
+##para editar matrices
+z["escuela1","jocotitlan"] <-28 ##cambiar el valor de una posicion
+z
+edit(z)
+##para multiplicar matrices
+j%*%i
+##para la transpuesta de una matriz
+t(il)
+####DATA FRAME####
+nombres <- c("sergio", "juan","rozario","jessica")
+edad <- c(30,43,21,18)
+altura <- c(170,165,175,172)
+salario <- c(3000,4500,2200,4300)
+basem <- data.frame (nombres,edad,altura,salario)
+View(basem)
+basem [4,3] <- 178 ## asigno el valor 178 a la posicion del 4to renglon 3a columna
+basem$salario * 2.2 -> basem$salario ##multiplico salario  ##asignar una ruta con $
+basem
+peso <- c(83.2, 75.2, 69.3, 70.5) ### nuevo vector
+basem <- data.frame (nombres,edad,altura,salario, peso)
+basem
+basem$peso * 1.2 -> basem$peso ## es lo mismo basem$peso <- basem$peso * 1.2
+basem
+
+round(basem$peso,3) -> basem$peso  ###redondeando
+basem
+
+basem$escol <- c("prepa", "lic", "ninguno", "prim")  ##incorporar una nueva variable
+basem
+###incorporar variable sexo hombres 1 mujeres 2
+basem$sexo <- c(1,1,2,2)
+basem
+
+###table con sexo 
+table (basem$sexo)  ##tabla de frecuencia
+table (basem$peso)
+attach (basem)   ## significa que a partir de esta linea las variables pertenecen a basem
+table(sexo) ### y ya no es necesario poner basem$peso
+detach (basem)  ###elimina la funcion attach
+
+
+####paqueterias
+###instalar paqueterias desde internet
+install.packages (c("foreign","questionr","car"))
+##la paqueteria foreign  sirve para exportar o importar bases de datos
+##questionr es para expandir frecuencias de bases de datos muestrales y
+## car es  para regresion.
+##dentro de cada paquete vienen multiples funciones que solo las podemos usar
+#cuando mandamos a llamar el paquete
+##para mandar a llamar una paqueteria instalada, library() y 
+##requiere() son funciones equivalentes
+###Para mandar a llamar una paqueteria instalada
+library(foreign)
+library(questionr)
+require(car)
