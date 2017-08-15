@@ -1,0 +1,24 @@
+###importar bases de datos
+require (foreign)
+mti2015 <- read.dbf ("C://Users//Sala-D19//Desktop//mti2015_05_17_sdem_precodificado.DBF")
+table (mti2015$SEX)
+require (questionr)
+wtd.table(mti2015$SEX, weights = mti2015$FAC_MTI)   ##datos expandidos
+ls (mti2015)    ##ver las variables de la base
+sum(mti2015$FAC_MTI)
+table (mti2015$R_DEF_ENOE)
+table(mti2015$CS_P12)
+wtd.table(mti2015$CS_P12, weights = mti2015$FAC_MTI)
+wtd.table(mti2015$EDA,mti2015$CS_P12,weights = mti2015$FAC_MTI) ##renglones,columnas para 
+##hacer un cruce de DOS variables
+
+#####Filtrar Bases
+edomex <- subset (mti2015, mti2015$ENT ==15)#asi filtramos que solo haya poblacion del edo mex
+# table(edomex$SEX)
+edomexmuj <- subset (mti2015,mti2015$ENT == 15 & mti2015$SEX ==2)
+edo <- subset (mti2015,mti2015$ENT == "01" | mti2015$ENT ==32)
+table (edo$ENT)
+
+###para convertir una variable tipo caracter a numerica
+as.numeric(mti2015$ENT) ###convertir la variable a numerico
+class(mti2015$ENT)
