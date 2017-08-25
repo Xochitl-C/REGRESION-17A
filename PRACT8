@@ -1,0 +1,21 @@
+####Problema
+x <- c(.40,.41,.48,.51,.57,.60,.70,.75,.75,.78)
+y <- c(1.02,1.21,.88,.98,1.52,1.83,1.50,1.80,1.74,1.63)
+base1 <-data.frame(x,y)
+install.packages("ggplot2")
+install.packages("psych")
+library(foreign)
+library(ggplot2)
+library(psych)
+
+plot(base1[,1], base1[,2], main=" Diagrama de Dispersión",xlab = "X",ylab = "Y")
+abline(lm(base1[,2]~base1[,1]), col="darkblue")
+
+####ejercicio
+##la relacion entre el numero de comidas al dia y horas de rendimiento al dia
+##x es el numero de comidas al dia y=el numero de horas de rendimiento
+xx <- c(1,2,3,1,1,4,3,5,4,5)
+yy <- c(5,8,12,4,6,11,7,10,9,12)
+base2 <-data.frame(xx,yy)
+plot(base2[,1], base2[,2], main=" Diagrama de Dispersión 2",xlab = "X",ylab = "Y")
+abline(lm(base1[,2]~base1[,1]), col="darkblue3")
