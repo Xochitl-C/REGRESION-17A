@@ -1,0 +1,19 @@
+#Ejercicio
+temp<-c(59,63,68,72,74,78,83)
+al<-c(118,182,247,208,197,135,132)
+corr<-cor(temp,al)
+desvt<-sd(temp)
+desval<-sd(al)
+medt<-mean(temp)
+medal<-mean(al)
+B1<-corr*(desval/desvt)
+B0<-medal-B1*medt
+
+base1 <-data.frame(temp,al)
+install.packages("psych")
+library(foreign)
+library(ggplot2)
+library(psych)
+
+plot(base1[,1], base1[,2], main=" Diagrama de Dispersión",xlab = "x=temperatura",ylab = "Y=Alargamiento")
+abline(lm(base1[,2]~base1[,1]), col="darkblue")
