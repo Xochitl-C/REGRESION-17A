@@ -1,0 +1,38 @@
+## ejercicio en clase###
+vax<-c(170,172,173,174,174,175,176,177,180,180,180,180,180,181,181,182,182,182,182,184,184,185,186,188)
+vay<-c(.84,1.31,1.42,1.03,1.07,1.08,1.04,1.8,1.45,1.60,1.61,2.13,2.15,.84,1.43,.9,1.81,1.94,2.68,1.49,2.52,3,1.87,3.08)
+#1)determine la ec de la recta de regresion estimada
+#2)calcule una estimacion puntual del salto horizontal promedio cuando la estatura de la persona es de 182
+#3)calcule los valores de los residuos de minimos cuadrados de las 4 obsevaciones con las cuales la estatura es de 182
+#4)¿que proporcion de la variacion observada en el salto horizontal es atribuida a la relacion de regresion lineal simple.
+
+corr<-cor(vax,vay)
+desvx<-sd(vax)
+desvy<-sd(vay)
+medx<-mean(vax)
+medy<-mean(vay)
+B1<-corr*(desvy/desvx)
+B0<-medy-B1*medx
+base1 <-data.frame(vax,vay)
+library(foreign)
+library(ggplot2)
+library(psych)
+
+plot(base1[,1], base1[,2], main=" Diagrama de Dispersión",xlab = "Estatura",ylab = "Salto Horizontal")
+abline(lm(base1[,2]~base1[,1]), col="darkblue")
+b<-B0+B1*(vax)
+##2)
+val<-B0+B1*(182)
+##3)
+res<-vay-b
+res1<-.9-val
+res2<-1.81-val
+res3<-1.94-val
+res4<-2.68-val
+##4)
+sst<-sum(vay^2)-(sum(vay)^2/length(vay))
+sse<-sum(vay^2)-B0*(sum(vay))-B1*(sum(vax*vay))
+r2=1-sse/sst
+###alternativa 
+ mod<-lm(vay~vax)
+mod
