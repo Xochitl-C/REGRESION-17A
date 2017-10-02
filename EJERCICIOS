@@ -1,0 +1,259 @@
+##Ejercicio 1)
+##x= volumen de precipitación pluvial (m^3)
+##y= volumen de escurrimiento (m^3) en un lugar particular
+
+x<- c(5,12,14,17,23,30,40,47,55,67,72,81,96,112,127)
+y<- c(4,10,13,15,15,25,27,46,38,46,53,70,82,99,100)
+
+medx<-mean(x)
+medy<-mean(y)
+sumx<-sum(x)
+sumy<-sum(y)
+sumxy<-sum(x*y)
+sumx2<-sum(x^2)
+Sxy<-sumxy-((sumx*sumy)/length(x))
+Sxx<-sumx2-(sumx^2/length(x))
+B1<-Sxy/Sxx
+B0<-medy-(B1*medx)
+v<-B0+B1*x
+res<-y-v
+SSE<-sum(res^2)
+s2<-SSE/(length(x)-2)
+SST<-sum((y-medy)^2)
+r2<-1-SSE/SST
+
+datos<-data.frame(x,y)
+plot(datos[,1], datos[,2], main="Diagrama de Dispersión",xlab = "Volumen de precipitación pluvial (m^3)", 
+     ylab = "Volumen de escurrimiento (m^3) ")
+abline(lm(datos[,2]~datos[,1]), col="darkblue")
+
+##a) ¿Será que una gráfica de dispersión de los datos apoya el uso del modelo RLS?
+##Si, ya que la gráfica te permite observar la distribución y el comportamiento de los datos.
+##b) Calcule las estimaciones puntuales de la pendiente y la intercepción de la recta de regresión.
+##pendiente B1=0.826973
+##intersección de la recta B0=-1.128304
+##c)
+B0+B1*50
+## 40.22035
+##d)
+sqrt(s2)
+##s=5.240462
+##e)
+##r^2=0.975268
+##El 97% del volumen de escurrimiento en un lugar particular se puede atribuir al 
+##volumen de precipitación pluvial
+
+##Ejercicio 2)
+##x=peso unitario (por pie cúbico) en muestras de concreto
+##y=porosidad(%)
+
+x<-c(99.0,101.1,102.7,103.0,105.4,107.0,108.7,110.8,112.1,112.4,113.6,113.8,115.1,115.4,120.0)
+y<-c(28.8,27.9,27.0,25.2,22.8,21.5,20.9,19.6,17.1,18.9,16.0,16.7,13.0,13.6,10.8)
+
+medx<-mean(x)
+medy<-mean(y)
+sumx<-sum(x)
+sumy<-sum(y)
+sumxy<-sum(x*y)
+sumx2<-sum(x^2)
+Sxy<-sumxy-((sumx*sumy)/length(x))
+Sxx<-sumx2-(sumx^2/length(x))
+B1<-Sxy/Sxx
+B0<-medy-(B1*medx)
+v<-B0+B1*x
+res<-y-v
+SSE<-sum(res^2)
+s2<-SSE/(length(x)-2)
+SST<-sum((y-medy)^2)
+r2<-1-SSE/SST
+
+##a)
+## y=118.909917-0.904731(x)
+datos<-data.frame(x,y)
+plot(datos[,1], datos[,2], main="Diagrama de Dispersión",
+     xlab = "Peso unitario (por pie cúbico) en muestras de concreto",ylab = "Porosidad (%)")
+abline(lm(datos[,2]~datos[,1]), col="blue")
+##Sí, ya que se puede observar en el gráfico de dispersión que la recta de regresión estimada 
+##se aproxima a la mayor parte de los valores reales.
+##b) 
+#Por cada pie cúbico que se incrementa el peso en las muestras de concreto disminuye en 0.9047 la porosidad.
+##c)
+B0+B1*(135)
+## 118.909916-0.904730*(135)=-3.228722
+##No es una buena idea debido a que la cantidad de peso para la que se desea 
+##estimar la porosidad esta fuera del rango de los valores con los que se estimó la recta de regresión.
+##d)
+res[c(1,2)]
+##residuo1=-0.5415817
+##residuo2=0.4583527
+##e)
+sqrt(s2)
+##s=0.9380352
+##Este valor representa que hay poca dispersión de los datos en torno a la recta de 
+##regresión y una baja variabilidad en el modelo.
+##f)
+r2
+## r^2=0.973887
+##la porosidad depende 97% del peso en las muestras de concreto.
+
+##Ejercicio 3)
+## x=esfuerzo cúbico (Mpa)
+## y=esfuerzo axial (MPa)
+
+x<-c(112.3,97.0,92.7,86.0,102.0,99.2,95.8,103.5,89.0,86.7)
+y<-c(75.0,71.0,57.7,48.7,74.3,73.3,68.0,59.3,57.8,48.5)
+
+medx<-mean(x)
+medy<-mean(y)
+sumx<-sum(x)
+sumy<-sum(y)
+sumxy<-sum(x*y)
+sumx2<-sum(x^2)
+Sxy<-sumxy-((sumx*sumy)/length(x))
+Sxx<-sumx2-(sumx^2/length(x))
+B1<-Sxy/Sxx
+B0<-medy-(B1*medx)
+v<-B0+B1*x
+res<-y-v
+SSE<-sum(res^2)
+s2<-SSE/(length(x)-2)
+SST<-sum((y-medy)^2)
+
+datos<-data.frame(x,y)
+plot(datos[,1], datos[,2], main="Diagrama de Dispersión",
+     xlab = "Esfuerzo cúbico (Mpa)", ylab = "Esfuerzo axial (MPa)")
+abline(lm(datos[,2]~datos[,1]), col="blueviolet")
+##a)y=-31.803691+0.986970(x)
+##Por cada unidad que se incrementa el esfuerzo cúbico se incrementa en 0.986970 el esfuerzo axial.
+##b)
+r2<-1-SSE/SST
+##r^2=0.6300489
+##El 63% del esfuerzo axial se puede atribuir al esfuerzo cúbico
+##c)
+sqrt(s2)
+##s=6.624762
+##Este valor representa que hay mucha dispersión de los datos en torno a la recta de regresión y 
+##una alta variabilidad en el modelo.
+
+## Ejercicio 4)
+##x=tasa de liberación debido al área de quemador
+##y=Tasa de emisión de NO
+x<-c(100,125,125,150,150,200,200,250,250,300,300,350,400,400)
+y<-c(150,140,180,210,190,320,280,400,430,440,390,600,610,670)
+
+medx<-mean(x)
+medy<-mean(y)
+sumx<-sum(x)
+sumy<-sum(y)
+sumxy<-sum(x*y)
+sumx2<-sum(x^2)
+Sxy<-sumxy-((sumx*sumy)/length(x))
+Sxx<-sumx2-(sumx^2/length(x))
+B1<-Sxy/Sxx
+B0<-medy-(B1*medx)
+v<-B0+B1*x
+res<-y-v
+SSE<-sum(res^2)
+s2<-SSE/(length(x)-2)
+SST<-sum((y-medy)^2)
+r2<-1-SSE/SST
+
+datos<-data.frame(x,y)
+plot(datos[,1], datos[,2], main="Diagrama de Dispersión",
+     xlab = "Tasa de liberación debido al área de quemador", ylab = "Tasa de emisión de NO")
+abline(lm(datos[,2]~datos[,1]), col="darkblue")
+
+##a)y=-45.551905+1.711432(x)
+##b)
+B0+B1*(225)
+##339.5204
+##c)
+B0+B1*(175)
+## 253.9488
+##d)No es una buena idea debido a que la tasa de liberación para la que se desea estimar 
+##la tasa de emisión esta fuera del rango de los valores con los que se estimó la recta de regresión.
+
+##Ejercicio 5)
+#x= área superficial de la roca
+#y=densidad de la colonia
+
+x<-c(50,71,55,50,33,58,79,26,69,44,37,70,20,45,49)
+y<-c(152,1929,48,22,2,5,35,7,269,38,171,13,43,185,25)
+
+medx<-mean(x)
+medy<-mean(y)
+sumx<-sum(x)
+sumy<-sum(y)
+sumxy<-sum(x*y)
+sumx2<-sum(x^2)
+Sxy<-sumxy-((sumx*sumy)/length(x))
+Sxx<-sumx2-(sumx^2/length(x))
+B1<-Sxy/Sxx
+B0<-medy-(B1*medx)
+v<-B0+B1*x
+res<-y-v
+SSE<-sum(res^2)
+s2<-SSE/(length(x)-2)
+SST<-sum((y-medy)^2)
+
+
+datos<-data.frame(x,y)
+plot(datos[,1], datos[,2], main="Diagrama de Dispersión",
+     xlab = "área superficial de la roca", ylab = "densidad de la colonia")
+abline(lm(datos[,2]~datos[,1]), col="orangered2")
+
+##a)y=-305.8813+9.963253(x)
+B0+B1*(70)
+B0+B1*(71)
+##con área superficial=70  391.5464
+##con área superficial=71  401.5097
+res[c(2,12)]
+## residuo con área superficial=70 1527.4903
+## residuo con área superficial=71 -378.5464
+##cuando el área superficial es de 70 el residuo (la diferencia entre el valor observado y 
+##el valor estimado en la recta de regresión) es muy alto, cuando el área 
+##superficial es de 71 el residuo es mucho menor que en el caso de 70 y es negativo.
+##b)
+r2<-1-SSE/SST
+##r^2=0.123713
+## El 12% de la densidad de la colonia de diatomeas invasivas es atribuido al área superficial de la roca.
+##
+sqrt(s2)
+##s=472.3759
+
+##c)
+x<-c(50,55,50,33,58,79,26,69,44,37,70,20,45,49)
+y<-c(152,48,22,2,5,35,7,269,38,171,13,43,185,25)
+
+medx<-mean(x)
+medy<-mean(y)
+sumx<-sum(x)
+sumy<-sum(y)
+sumxy<-sum(x*y)
+sumx2<-sum(x^2)
+Sxy<-sumxy-((sumx*sumy)/length(x))
+Sxx<-sumx2-(sumx^2/length(x))
+B1<-Sxy/Sxx
+B0<-medy-(B1*medx)
+v<-B0+B1*x
+res<-y-v
+SSE<-sum(res^2)
+s2<-SSE/(length(x)-2)
+SST<-sum((y-medy)^2)
+r2<-1-SSE/SST
+
+datos<-data.frame(x,y)
+plot(datos[,1], datos[,2], main="Diagrama de Dispersión",
+     xlab = "área superficial de la roca", ylab = "densidad de la colonia")
+abline(lm(datos[,2]~datos[,1]), col="seagreen1")
+##y=34.373358+0.779230(x)
+##La eliminación de la observación hace una gran diferencia entre las rectas, 
+##ya que en la primera la intersección con el eje y es -305.8813 y en la segunda es 34.373358 y 
+##la pendiente en la primera es 9.963253 y en la segunda es 0.779230.
+## r^2=0.023833
+sqrt(s2)
+##s=87.22218
+##Tanto r^2 como s disminuyeron, r^2 pasó de 0.123713 a 0.023833, es decir, 
+##disminuyó la proporción en que la densidad de las colonias invasivas depende del área superficial 
+##de la roca. En cuanto a s, disminuyó de 472.3759 a 87.22218 lo que significa que la 
+##variabilidad entre los datos es menor.
