@@ -1,0 +1,41 @@
+##swiss
+##medicion estandarizada de la fecundidad e indicadores socioeconomicos para cada una de las provincias francesas hablantes 
+##de suiza alrededor de 1888
+require(stats)
+base<-data.frame(swiss)
+
+##analisis exploratorio
+names(base)
+pairs(base)
+cor(base)
+##propuesta modelo de regresion simple con base en el analisis exploratorio
+regresion1<-lm(Infant.Mortality~Fertility,data = base)
+###modelo propuesto anteriormente (ya es independiente de la linea anterior)
+nulo<-lm(Fertility~1, data = base) ##el modelo nulo se hace con la independiente y una constante, es como una referencia y saber si tienen relacion con la var depend
+summary(nulo)
+completo<-lm(Fertility~.,data = base)  ##con el punto agregas todas las var independientes,es decir, lm(Fertility~Infant.Mortality)+Education+Agriculture+Catholic)
+step(nulo,scope = list(lower=nulo,upper=completo),direction = "forward") ##el scope incorpora todas las posibilidades de modelo empezando con 
+##el nulo hasta el completo que tiene todas las var independientes
+summary(completo)
+
+####ejercicio
+##la base que se utilizo es sobre datos de ahorro del ciclo de vida
+help(datasets)
+library(help ="datasets")
+require(datasets);data(LifeCycleSavings );?LifeCycleSavings
+base1<-data.frame(LifeCycleSavings)
+
+names(base1)
+pairs(base1)
+cor(base1)
+
+nul<-lm(sr~1, data = base1) ###la variable dependiente seleccionada fue "ahorros personales"
+summary(nulo)
+complet<-lm(sr~.,data = base1) 
+step(nul,scope = list(lower=nul,upper=complet),direction = "forward") 
+##aplicando el step, el mejor modelo es el que incluye 3 variables independientes, la que elimino fue dpi
+##el AIC es de 136.45
+base2<-lm(sr ~ pop15 + ddpi + pop75, data = base1)
+summary(base2)
+##el error estandar del mejor modelo es 3.767 que no es muy alta, y la R ajustada es de 0.2933, lo que explica un 29% 
+##de la variabilidad, por lo que no explica mucha de la variabilidad.
