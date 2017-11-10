@@ -1,0 +1,95 @@
+##swiss
+##medicion estandarizada de la fecundidad e indicadores socioeconomicos para cada una de las provincias francesas hablantes 
+##de suiza alrededor de 1888
+require(stats)
+base<-data.frame(swiss)
+
+##analisis exploratorio
+names(base)
+pairs(base)
+cor(base)
+##propuesta modelo de regresion simple con base en el analisis exploratorio
+regresion1<-lm(Infant.Mortality~Fertility,data = base)
+###modelo propuesto anteriormente (ya es independiente de la linea anterior)
+nulo<-lm(Fertility~1, data = base) ##el modelo nulo se hace con la independiente y una constante, es como una referencia y saber si tienen relacion con la var depend
+summary(nulo)
+completo<-lm(Fertility~.,data = base)  ##con el punto agregas todas las var independientes,es decir, lm(Fertility~Infant.Mortality)+Education+Agriculture+Catholic)
+step(nulo,scope = list(lower=nulo,upper=completo),direction = "forward") ##el scope incorpora todas las posibilidades de modelo empezando con 
+##el nulo hasta el completo que tiene todas las var independientes
+summary(completo)
+
+########
+mod1<-lm(formula = Fertility ~ Education + Catholic + Infant.Mortality + Agriculture, data = base)
+summary(mod1)
+##con la finalidad de observar aspectos basicos como la r cuadrada ajustada que nos permite conocer la variabilidad explicada
+##del modelo. los errores de residuos al estandar 7.168, la significancia de las variables, todas son significativas.
+##el estadistico F y el p-value para ver el ajuste del modelo.
+##la prueba de hipotesis que se aplica en el estadistico F es
+##H0:B0,B1,...Bk = 0
+##Ha: al menos una Bj diferente de cero
+##Aqui esperamos rechazar la hipotesis nula, por lo que el valor p-value debe ser <0.05 y ademas el estadistico F debe ser
+##mayor a 1
+##al parecer tenemos un buen modelo segun estos indicadores.
+
+###PRUEBAS FORMALES DE LOS SUPUESTOS#####
+###pruebas de mrm
+
+shapiro.test(rstudent(mod1))  ## prueba shapiro para normalidad
+###aqui se espera no rechazar la Hip nula, por lo que se pide un p-value >.05, aqui observamos un p-value de .48
+##por lo que podemos mencionar que no rechazamos la hip nula, es decir, los errores se distribuyen normal.
+require(lmtest)
+bptest(mod1)  ##prueba breusch pagan que permite ver autocorrelacion
+##aqui esperamos no rechazar la hip nula es decir, un p-value mayor a .05, este modelo nos permite saber que no hay mas de 
+##dos variables que aporten lo mismo al modelo, en este caso tenemos un p-value de .53 por lo que no rechazamos la hip nula
+##que es lo que estabamos esperando o se puede decir que este modelo si cumple el supuesto de autocorrelacion.
+dwtest(mod1, alternative = "two.sided")  ##prueba independencia
+summary(mod1)
+##la prueba t para para H0:  agri=0 frente a I Agri =0 es significativa ya que 0.02857 es menor que .05
+####INTERPRETACION DE COEFICIENTES##
+##el modelo elegido estima que hay una disminucion de 0.15 involucrados en la agricultura manteniendo constantes las
+##variables restantes
+###Agriculture...-0.15462 coeficiente
+##el modelo elegido estima que hay un incremento de 0.12 en la tasa de fecundidad, cada aumento de 1 por ciento de catolicos
+##manteniendo constantes las variables restantes
+##catholic...0.1246...coeficiente
+##el modelo elegido estima que hay una disminucion de 0.98 en la tasa de fecundidad, cada aumento de 1 por ciento de educacion
+##manteniendo constantes las variables restantes
+#Education... -0.9802...coeficiente
+##el modelo elegido estima que hay un incremento de 1.07 en la tasa de fecundidad, cada aumento de 1 por ciento de mortalidad
+##infantil manteniendo constantes las variables restantes
+###infant.mortality...1.07...coeficiente
+
+#####EJERCICIO###
+base3<-data.frame(Seatbelts)
+View(base3)
+names(base3)
+pairs(base3)
+cor(base3)
+
+nulo1<-lm(drivers~1, data = base3)
+summary(nulo1)
+completo1<-lm(drivers~.,data = base3) 
+step(nulo1,scope = list(lower=nulo1,upper=completo1),direction = "forward")
+summary(completo1)
+
+########
+##El mejor modelo segun AIC es  con 5 var indep, el AIC es de 1785.53
+mod2<-lm(formula = drivers ~ DriversKilled + front + rear + law + VanKilled, data = base3)
+summary(mod2)
+
+###los errores estandar son de 103, que es un valor alto, la r^2 ajustada es de .087, lo que explica el 87% de la 
+##variabilidad, el valor de F es de 265 y el pvalue menor a .05, vankilled no es significativa
+
+
+###PRUEBAS FORMALES DE LOS SUPUESTOS#####
+
+shapiro.test(rstudent(mod2))  ## prueba shapiro para normalidad
+### aqui observamos un p-value de .9973, por lo que los errores se distribuyen normal.
+
+bptest(mod2)  ##prueba breusch pagan que permite ver autocorrelacion
+##el p-value es menor a .05, es decir,de 0.029 por lo que no se cumple este supuesto de autocorrelacion.
+
+dwtest(mod2, alternative = "two.sided")  ##prueba independencia
+###no se cumple este supuesto porque el p-value es de 0.00276 que es menor a .05
+
+
