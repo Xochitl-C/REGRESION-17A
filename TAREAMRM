@@ -1,0 +1,52 @@
+help(dataset)
+library(help ="datasets")
+require(datasets);data(USArrests);?USArrests
+base1<-data.frame(USArrests)
+
+names(base1)
+pairs(base1)
+cor(base1)
+
+#En este modelo, la variable dependiente sera Assault y las independientes seran las restantes.
+
+nulo<-lm(Assault~1,data=base1) 
+completo<-lm(Assault~.,data=base1) 
+step(nulo,scope=list(lower=nulo,upper=completo),direction = "forward") 
+
+#de acuerdo al analisis de step, el mejor modelo es:
+mod1<-lm(formula = Assault ~ Murder + Rape, data = base1)
+##esto debido a que al analizar todos los modelos posibles entre el modelo nulo y el modelo completo
+#ya que al analizar todos los modelos posibles entre el modelo nulo y el modelo completo
+#este modelo es el que presento el menor AIC con un valor de 385.44
+
+summary(mod1)
+##el error estanar del modelo es de 45.85, las dos var indep que quedaron en el modelo son significativas ya que su
+##p-value es menor a 0.05, el estadistico F es de 57.45 que es un buen valor y el p-value es mucho menor a .05
+##en cuanto a la R ajustada, tiene un valor de .6973, lo que explica un 69% la variabilidad del modelo, por ende, al parecer
+##se tiene un buen modelo.
+
+###PRUEBAS FORMALES DE LOS SUPUESTOS#####
+###pruebas de mrm
+
+shapiro.test(rstudent(mod1))  ## prueba shapiro para normalidad
+##el p-value de la prueba es.0503 que es ligeramente mayor a .05, por lo que se puede aceptar el supuesto, es decir,
+##aceptar que los errores se distribuyen normal.
+
+require(lmtest)
+bptest(mod1)  ##prueba breusch pagan que permite ver autocorrelacion
+##en esta prueba se espera un p-value mayor a .05, en este caso el p-value es de .182, de modo que el modelo si cumple el 
+##supuesto de autocorrelacion
+dwtest(mod1, alternative = "two.sided")  ##prueba independencia
+##los valores son muy cercanos a los exigidos por la prueba, es decir, DW=1.473 y el p-value es de 0.058, por lo que 
+##se podria haceptar el supuesto de independencia
+##########
+#De este modo se puede decir que se tiene un buen modelo.
+summary(mod1)
+####INTERPRETACION DE COEFICIENTES##
+##el modelo elegido estima que hay un incremento de 11.97 en la tasa de arrestos por asesinato por cada aumento de
+##1 en la tasa de arresto por asalto manteniendo constante la otra variable
+###Murder...1.9719 coeficiente
+##el modelo elegido estima que hay un incremento de 2.78 en la tasa de arrestos por violacion por cada aumento de 
+##1 en la tasa de arresto por asalto manteniendo constante la otra variable
+##Rape...2.7815...coeficiente
+
