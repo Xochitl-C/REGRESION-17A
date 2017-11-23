@@ -1,0 +1,35 @@
+###analisis de entrega de productos
+##se utiliza tiempo de var dependiente para decirle a los clientes cuanto va a tardar en llegar el producto.
+##saben que las var. que impactan en el tiempo de entrega son la distancia y el numero de cajas.
+ncajas<-c(10,15,10,20,25,18,12,14,16,22,24,17,13,30,24)
+distancia<-c(30,25,40,18,22,31,26,34,29,37,20,25,27,23,33)
+tiempo<-c(24,27,29,31,25,33,26,28,31,39,33,30,25,42,40)
+###tiempo es la var dependiente
+Estud<-data.frame(tiempo,ncajas,distancia)
+pairs(Estud)
+cor(Estud)
+nulo<-lm(tiempo~1, data = Estud)
+comp<-lm(tiempo~.,data = Estud)
+step(nulo,scope = list(lower~nulo,upper=comp),direction="forward")
+
+mod2<-lm(tiempo ~ ncajas+distancia, data = Estud)
+summary(mod2)
+
+###modelo aceptable y realizamos las pruebas..
+shapiro.test(rstudent(mod2))
+require(lmtest)  ###no pasa la prueba
+bptest(mod2)   ##pasa esta prueba
+dwtest(mod2,alternative = "two.sided")  ###pasa esta prueba
+########NO PASA NORMALIDAD POR LO QUE HAY QUE REVISAR
+#### los outlier######
+##install.packages("car")
+require(car)
+outlierTest(comp,cutoff=.05,n.max=5,order=T)
+influencePlot(comp,id.n = 5)
+##la observacion 5 indica con problemas
+##ahora para confirmar los casos que tienen implicaciones en el modelo el grafico de distancias de cook
+cmod2<-cooks.distance(comp)
+cmod2
+install.packages("faraway")
+require(faraway)
+halfnorm(cmod2,labs=etique,ylab="dist cook")
