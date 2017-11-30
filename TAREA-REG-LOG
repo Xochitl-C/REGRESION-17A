@@ -1,0 +1,116 @@
+require (foreign)
+base<-data.frame(read.spss("C:/Users/xoch_/Documents/R/solorural.sav"))
+###en la base son niñ@s de 5 a 17 años de zonas rurales
+###modulo de trabajo infantil INEGI 2013
+###var dep= persona para la que trabaja al dia (T_PER)
+######categorias
+####### familiar
+####### no familiar
+##### cuenta propia
+###################var indep
+##1)sexo    (SEX)
+### 1 hombre
+####2 mujer
+#####grupo de edad (EDA1)
+##6 a 9
+##10 a 13
+##14 a 17
+##3)jefe del hogar (SEX_JEFE)
+##1 hombre
+##2 mujer
+##4) tamaño hogar (TAM_HOG)
+###1 1 a 3 personas
+###2 4 a 5 personas
+###3 6 a 7 personas
+###4 8 y mas personas
+##5) ocupacion jefe hogar (OCU_JEFE)
+###1 ocupado
+###2 desocupado
+##6)tipo de apoyo recibido (T_APO1)
+##1 beca para estudiar
+##2 programa gobierno
+##3 ayuda familiar
+##4 otro tipo de ayuda
+##5 no recibe
+
+##var dependiente, la categoria de referencia es familiar
+###la categoria de referencia con la que se va a contrastar y va a ser la posicion 1 de cada variable
+###aplicar la regresion  logistica e interpretar las variables
+base1<-data.frame(base$t_per,base$sex,base$eda1,base$sex_jefe,base$tam_hog,base$ocu_jefe,base$t_apo1)
+base2<-na.omit(base1)
+base2$base.eda1<-as.factor(base2$base.eda1)
+#names(base2)
+#class(base2$base.eda1)
+
+base3<-subset(base2,base.t_per!="0" & base.t_per !="4")
+
+library("nnet")
+pru<-multinom(base.t_per~.,data = base3)
+summary(pru)
+head(pru)
+exp(coefficients(pru))
+
+#log.odds <- predict(modelo.logit, data.frame(nivel_satisfaccion = 0.98,ultima_evaluacion = 0.70))
+#log.odds
+
+#exp(log.odds)/(1-exp(log.odds))
+
+
+###############################################################################
+
+##En el analisis de niñ@s de zonas rurales que trabajan. La oportunidad de trabajar con un no familiar siendo niña es de 1.197 veces
+##frente a trabajar con un familiar con respecto a los niños. Del mismo modo,las niñas tienen 3.30 veces oportunidad 
+##de trabajar por su cuenta frente a trabajar con un familiar con respecto a los niños.
+
+##l@s niñ@s de entre 10 y 13 años de edad tienen 4.56 veces oportunidad de trabajar para un no familiar frente 
+##a trabajar con un familiar con respecto a l@s niñ@s de entre 6 y 9 años, asi mismo, en el mismo rango de edad l@s niñ@s tienen
+##la oportunidad de trabajar por su cuenta en 91.7% frente a trabajar con un familiar con respecto a l@s niñ@s de entre 6 y 9 años.
+
+##l@s niñ@s de entre 14 y 17 años de edad tienen 14.42 veces oportunidad de trabajar para un no familiar frente 
+##a trabajar con un familiar con respecto a l@s niñ@s de entre 6 y 9 años, asi mismo, en el mismo rango de edad l@s niñ@s tienen
+##la oportunidad de trabajar por su cuenta 1.42 veces frente a trabajar con un familiar con respecto a l@s niñ@s de entre 6 y 9 años.
+
+##la oportunidad de trabajar con un no familiar cuando el jefe del hogar es mujer es de 1.54 veces frente a trabajar con un 
+##familiar con respecto al hombre como jefe del hogar y la oportunidad de trabajar por su cuenta cuando el jefe del hogar es mujer
+##es de 2.31 veces frente a trabajar con un familiar con respecto a hogares donde el jefe de hogar es hombre.
+
+##l@s niñ@s proveninetes de hogares de entre 4 y 5 integrantes tienen 1.057 veces oportunidad de trabajar para un no familiar
+##frente a trabajar con un familiar respecto a l@s niñ@s proveninetes de hogares de entre 1 y 3 integrantes. en el mismo rango
+##de integrantes l@s niñ@s tienen la oportunidad de trabajar por su cuenta en 39% frente a trabajar con un familiar respecto a
+##l@s niñ@s proveninetes de hogares de entre 1 y 3 integrantes.
+
+##l@s niñ@s proveninetes de hogares de entre 6 y 7 integrantes tienen 1.21 veces oportunidad de trabajar para un no familiar
+##frente a trabajar con un familiar respecto a l@s niñ@s proveninetes de hogares de entre 1 y 3 integrantes. en el mismo rango
+##de integrantes l@s niñ@s tienen la oportunidad de trabajar por su cuenta en 31.5% frente a trabajar con un familiar respecto a
+##l@s niñ@s proveninetes de hogares de entre 1 y 3 integrantes.
+
+##l@s niñ@s proveninetes de hogares de 8 y mas integrantes tienen 1.13 veces oportunidad de trabajar para un no familiar
+##frente a trabajar con un familiar respecto a l@s niñ@s proveninetes de hogares de entre 1 y 3 integrantes. en el mismo rango
+##de integrantes l@s niñ@s tienen la oportunidad de trabajar por su cuenta en 12.5% frente a trabajar con un familiar respecto a
+##l@s niñ@s proveninetes de hogares de entre 1 y 3 integrantes.
+
+##por su parte,la oportunidad de trabajar con un no familiar cuando el jefe del hogar esta desocupado es de 2.03 veces frente a trabajar con un 
+##familiar con respecto a un jefe de hogar ocupado y la oportunidad de trabajar por su cuenta cuando el jefe del hogar esta desocupado
+##es de 1.15 veces frente a trabajar con un familiar con respecto a hogares donde el jefe de hogar esta ocupado.
+
+##l@s niñ@s que reciben apoyo de otro programa de gobierno tienen 2.33 veces oportunidad de trabajar para un no familiar
+##frente a trabajar con un familiar respecto a l@s niñ@s que reciben una beca. Con el mismo tipo de apoyo, l@s niñ@s tienen
+##1.52 veces oportunidad de trabajar por su cuenta frente a trabajar con un familiar respecto a l@s niñ@s que reciben una beca.
+
+##l@s niñ@s que reciben ayuda de un familiar que vive en otro hogar tienen 2.87 veces oportunidad de trabajar para un no familiar
+##frente a trabajar con un familiar respecto a l@s niñ@s que reciben una beca. Con el mismo tipo de apoyo, l@s niñ@s tienen
+##6.76 veces oportunidad de trabajar por su cuenta frente a trabajar con un familiar respecto a l@s niñ@s que reciben una beca.
+
+##l@s niñ@s que reciben otro tipo de ayuda tienen 2.13 veces oportunidad de trabajar para un no familiar
+##frente a trabajar con un familiar respecto a l@s niñ@s que reciben una beca. Con el mismo tipo de apoyo, l@s niñ@s tienen
+##0% oportunidad de trabajar por su cuenta frente a trabajar con un familiar respecto a l@s niñ@s que reciben una beca.
+
+##l@s niñ@s que no han recibido ayuda tienen 2.43 veces oportunidad de trabajar para un no familiar
+##frente a trabajar con un familiar respecto a l@s niñ@s que reciben una beca. Sin ningun apoyo, l@s niñ@s tienen
+##1.71 veces oportunidad de trabajar por su cuenta frente a trabajar con un familiar respecto a l@s niñ@s que reciben una beca.
+
+############### Por si se desea hacer un modelo binomial
+mod1 <- glm(base.t_per~., data = base3, family = "binomial")
+summary(mod1)
+head(mod1)
+exp(coefficients(mod1))
